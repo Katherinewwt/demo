@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            height: 100%;
+            background: #f8f9fc;
+        }
+        button {
+            padding: 6px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #c82333;
+        }
+    </style>
+</head>
+<!-- 修改 body 内的代码 -->
+<body>
+    <span>当前用户：<script>document.write(localStorage.getItem('username') || '未登录')</script></span>
+    <button onclick="logout()">退出登录</button>
+
+    <script>
+        function logout() {
+            // 清除登录状态
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            // 跳转到登录页
+            window.top.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

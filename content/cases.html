@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侵权赔偿案例</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        .chart-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .search-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .table-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        .btn-search {
+            background: #1abc9c;
+            color: white;
+        }
+        .btn-search:hover {
+            background: #16a085;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container-fluid p-4">
+        <!-- 数据图表展示 -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="chart-card">
+                    <h5>同类侵权案例 (5089)</h5>
+                    <div id="scatterChart" style="height: 200px;"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="chart-card">
+                    <h5>案例平均赔偿额 (7819)</h5>
+                    <div id="boxplotChart" style="height: 200px;"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="chart-card">
+                    <h5>案例热度指数 (85)</h5>
+                    <div id="barChart" style="height: 200px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索表单 -->
+        <div class="search-form">
+            <div class="row g-3">
+                <div class="col-md">
+                    <input type="text" class="form-control" placeholder="案件ID">
+                </div>
+                <div class="col-md">
+                    <input type="text" class="form-control" placeholder="侵权行为描述">
+                </div>
+                <div class="col-md">
+                    <input type="text" class="form-control" placeholder="侵权发生时间">
+                </div>
+                <div class="col-md">
+                    <input type="text" class="form-control" placeholder="受影响人数">
+                </div>
+                <div class="col-md">
+                    <input type="text" class="form-control" placeholder="已赔偿金额">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-search w-100">搜索</button>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-outline-secondary w-100">新增</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据表格 -->
+        <div class="table-container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>案件ID</th>
+                        <th>侵权行为描述</th>
+                        <th>侵权发生时间</th>
+                        <th>受影响人数</th>
+                        <th>已赔偿金额</th>
+                        <th>预期赔偿金额</th>
+                        <th>预测依据</th>
+                        <th>处理状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>AJ2025603</td>
+                        <td>某社交软件擅自使用用户个人位置数据并用于第三方广告</td>
+                        <td>2025年07月25日</td>
+                        <td>800</td>
+                        <td>0元</td>
+                        <td>120000元</td>
+                        <td>结合该软件行为频率及影响范围计算</td>
+                        <td>等待开庭审理</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">详情</button>
+                            <button class="btn btn-sm btn-warning">编辑</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>AJ2025602</td>
+                        <td>一家在线教育平台未经授权泄露个人信息</td>
+                        <td>2025年05月20日</td>
+                        <td>200</td>
+                        <td>30000元</td>
+                        <td>50000元</td>
+                        <td>依据平台数据泄露次数及影响程度</td>
+                        <td>已完成赔偿</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">详情</button>
+                            <button class="btn btn-sm btn-warning">编辑</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>AJ2025601</td>
+                        <td>零售电子公司未经同意收集用户个人数据并提供给第三方厂商</td>
+                        <td>2025年03月15日</td>
+                        <td>500</td>
+                        <td>50000元</td>
+                        <td>80000元</td>
+                        <td>参考类似数据泄露案例及数据平台合作情况</td>
+                        <td>处理中</td>
+                        <td>
+                            <button class="btn btn-sm btn-primary">详情</button>
+                            <button class="btn btn-sm btn-warning">编辑</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>共 3 条</div>
+                <div class="d-flex align-items-center">
+                    <ul class="pagination mb-0">
+                        <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                    </ul>
+                    <select class="form-select ms-2" style="width: auto;">
+                        <option>5 条/页</option>
+                        <option>10 条/页</option>
+                        <option>20 条/页</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在表格后面、</body>前添加以下代码 -->
+    <script src="js/dataHandler.js"></script>
+    <script>
+        // 模拟案例数据
+        const mockCases = Array.from({length: 150}, (_, index) => ({
+            id: index + 1,
+            caseNumber: `C${String(index + 1).padStart(3, '0')}`,
+            caseType: ['数据泄露', '未授权使用', '超范围收集', '违规处理'][Math.floor(Math.random() * 4)],
+            plaintiffType: ['个人', '企业', '组织'][Math.floor(Math.random() * 3)],
+            defendantType: ['互联网公司', '教育机构', '金融机构', '医疗机构'][Math.floor(Math.random() * 4)],
+            damageAmount: Math.floor(Math.random() * 100000) + 5000,
+            compensationAmount: Math.floor(Math.random() * 80000) + 3000,
+            courtDecision: ['全额赔偿', '部分赔偿', '驳回诉讼'][Math.floor(Math.random() * 3)],
+            caseStatus: ['已结案', '审理中', '上诉中'][Math.floor(Math.random() * 3)],
+            filingDate: new Date(2023, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)).toLocaleDateString(),
+            closingDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)).toLocaleDateString()
+        }));
+    
+        const dataHandler = new DataHandler(mockCases);
+    
+        // 渲染表格数据
+        function renderTable() {
+            const {data, total, currentPage, totalPages} = dataHandler.getPageData();
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.caseNumber}</td>
+                    <td>${item.caseType}</td>
+                    <td>${item.plaintiffType}</td>
+                    <td>${item.defendantType}</td>
+                    <td>${item.damageAmount}</td>
+                    <td>${item.compensationAmount}</td>
+                    <td>${item.courtDecision}</td>
+                    <td>${item.caseStatus}</td>
+                    <td>${item.filingDate}</td>
+                    <td>${item.closingDate}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn btn-sm btn-warning" onclick="deleteItem(${item.id})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+    
+            // 更新分页信息
+            document.querySelector('.pagination').innerHTML = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">上一页</a>
+                </li>
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => `
+                    <li class="page-item ${page === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${page})">${page}</a>
+                    </li>
+                `).join('')}
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">下一页</a>
+                </li>
+            `;
+    
+            document.querySelector('.d-flex > div:first-child').textContent = `共 ${total} 条`;
+        }
+    
+        // 分页切换
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(dataHandler.data.length / dataHandler.pageSize)) return;
+            dataHandler.setPage(page);
+            renderTable();
+        }
+    
+        // 删除数据
+        function deleteItem(id) {
+            if (confirm('确定要删除这条记录吗？')) {
+                dataHandler.delete(id);
+                renderTable();
+            }
+        }
+    
+        // 编辑数据
+        function editItem(id) {
+            const item = dataHandler.data.find(item => item.id === id);
+            // 这里可以弹出模态框进行编辑
+            const newAmount = prompt('请输入新的赔偿金额：', item.compensationAmount);
+            if (newAmount !== null) {
+                dataHandler.update(id, {compensationAmount: parseInt(newAmount)});
+                renderTable();
+            }
+        }
+    
+        // 添加数据
+        document.querySelector('button.btn-outline-secondary').onclick = function() {
+            const newItem = {
+                caseNumber: `C${String(dataHandler.data.length + 1).padStart(3, '0')}`,
+                caseType: '数据泄露',
+                plaintiffType: '个人',
+                defendantType: '互联网公司',
+                damageAmount: 50000,
+                compensationAmount: 30000,
+                courtDecision: '审理中',
+                caseStatus: '审理中',
+                filingDate: new Date().toLocaleDateString(),
+                closingDate: '-'
+            };
+            dataHandler.add(newItem);
+            renderTable();
+        };
+    
+        // 初始化渲染
+        renderTable();
+    
+        // 每页显示条数变化处理
+        document.querySelector('.form-select').addEventListener('change', function(e) {
+            dataHandler.setPageSize(parseInt(e.target.value));
+            renderTable();
+        });
+    </script>
+    <script>
+        // 初始化图表
+        function initCharts() {
+            // 散点图
+            const scatter = echarts.init(document.getElementById('scatterChart'));
+            scatter.setOption({
+                xAxis: {},
+                yAxis: {},
+                series: [{
+                    type: 'scatter',
+                    data: [[10, 20], [20, 30], [30, 40], [40, 50]],
+                    symbolSize: function (data) {
+                        return Math.sqrt(data[0] * data[1]) / 5;
+                    }
+                }]
+            });
+
+            // 箱线图
+            const boxplot = echarts.init(document.getElementById('boxplotChart'));
+            boxplot.setOption({
+                xAxis: {
+                    type: 'category',
+                    data: ['案例1', '案例2', '案例3']
+                },
+                yAxis: {},
+                series: [{
+                    type: 'boxplot',
+                    data: [
+                        [5000, 6000, 7000, 8000, 9000],
+                        [4000, 5000, 6000, 7000, 8000],
+                        [3000, 4000, 5000, 6000, 7000]
+                    ]
+                }]
+            });
+
+            // 柱状图
+            const bar = echarts.init(document.getElementById('barChart'));
+            bar.setOption({
+                xAxis: {
+                    type: 'category',
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月']
+                },
+                yAxis: {},
+                series: [{
+                    type: 'bar',
+                    data: [20, 30, 40, 50, 60, 70]
+                }]
+            });
+        }
+
+        // 页面加载完成后初始化图表
+        window.addEventListener('load', initCharts);
+
+        // 监听窗口大小变化，调整图表大小
+        window.addEventListener('resize', function() {
+            const charts = document.querySelectorAll('[id$="Chart"]');
+            charts.forEach(chart => {
+                echarts.getInstanceByDom(chart)?.resize();
+            });
+        });
+    </script>
+</body>
+</html>

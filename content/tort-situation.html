@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>侵权概况</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fc;
+        }
+        .overview-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            height: 400px;
+        }
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- 统计概览 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="overview-card">
+                    <h6 class="text-muted">侵权调查总数</h6>
+                    <h3>4,057</h3>
+                    <div class="text-success">↑ 12.5%</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="overview-card">
+                    <h6 class="text-muted">赔偿总额</h6>
+                    <h3>32.2万</h3>
+                    <div class="text-danger">↓ 5.2%</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="overview-card">
+                    <h6 class="text-muted">预估增长率</h6>
+                    <h3>127.2%</h3>
+                    <div class="text-success">↑ 8.3%</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="overview-card">
+                    <h6 class="text-muted">和解率</h6>
+                    <h3>504.8%</h3>
+                    <div class="text-success">↑ 15.7%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 趋势图表 -->
+        <div class="overview-card">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5>个人数据侵权概况</h5>
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #4e73df"></span>
+                        <span>侵权调查总数</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #1cc88a"></span>
+                        <span>赔偿总额</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color" style="background: #36b9cc"></span>
+                        <span>预估增长率</span>
+                    </div>
+                </div>
+            </div>
+            <div id="trendChart" class="chart-container"></div>
+        </div>
+
+        <!-- 地区分布 -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="overview-card">
+                    <h5 class="mb-4">地区分布统计</h5>
+                    <div id="regionChart" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="overview-card">
+                    <h5 class="mb-4">类型占比</h5>
+                    <div id="typeChart" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initCharts() {
+            // 趋势图表
+            const trendChart = echarts.init(document.getElementById('trendChart'));
+            trendChart.setOption({
+                tooltip: {
+                    trigger: 'axis'
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    name: '侵权调查总数',
+                    type: 'line',
+                    data: [4057, 3200, 5600, 4800, 6200, 5400, 7800, 6500, 8200]
+                }, {
+                    name: '赔偿总额',
+                    type: 'line',
+                    data: [32.2, 28.5, 45.6, 38.9, 52.3, 47.8, 65.4, 58.2, 72.1]
+                }, {
+                    name: '预估增长率',
+                    type: 'line',
+                    data: [127.2, 115.8, 142.3, 133.6, 156.7, 148.2, 172.5, 163.8, 185.4]
+                }]
+            });
+
+            // 地区分布图表
+            const regionChart = echarts.init(document.getElementById('regionChart'));
+            regionChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['北京', '上海', '广州', '深圳', '杭州', '南京', '武汉', '成都', '重庆', '西安']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    type: 'bar',
+                    data: [
+                        {value: 4057.4, itemStyle: {color: '#4e73df'}},
+                        {value: 3245.6, itemStyle: {color: '#1cc88a'}},
+                        {value: 2876.3, itemStyle: {color: '#36b9cc'}},
+                        {value: 2543.7, itemStyle: {color: '#f6c23e'}},
+                        {value: 2187.2, itemStyle: {color: '#e74a3b'}},
+                        {value: 1876.5, itemStyle: {color: '#858796'}},
+                        {value: 1654.3, itemStyle: {color: '#4e73df'}},
+                        {value: 1432.8, itemStyle: {color: '#1cc88a'}},
+                        {value: 1265.4, itemStyle: {color: '#36b9cc'}},
+                        {value: 1087.6, itemStyle: {color: '#f6c23e'}}
+                    ]
+                }]
+            });
+
+            // 类型占比图表
+            const typeChart = echarts.init(document.getElementById('typeChart'));
+            typeChart.setOption({
+                tooltip: {
+                    trigger: 'item'
+                },
+                series: [{
+                    type: 'pie',
+                    radius: '70%',
+                    data: [
+                        {value: 4057.4, name: '侵权调查总数', itemStyle: {color: '#4e73df'}},
+                        {value: 32.2, name: '赔偿总额', itemStyle: {color: '#1cc88a'}},
+                        {value: 127.2, name: '预估增长率', itemStyle: {color: '#36b9cc'}},
+                        {value: 504.8, name: '和解率', itemStyle: {color: '#f6c23e'}},
+                        {value: 2084.7, name: '诉讼赔偿占比', itemStyle: {color: '#e74a3b'}},
+                        {value: 1467.9, name: '增长率', itemStyle: {color: '#858796'}}
+                    ]
+                }]
+            });
+        }
+
+        // DOM加载完成后初始化图表
+        document.addEventListener('DOMContentLoaded', initCharts);
+
+        // 使用防抖函数优化窗口调整时的图表重绘
+        function debounce(fn, delay) {
+            let timer = null;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, arguments), delay);
+            }
+        }
+
+        // 优化后的窗口调整处理
+        const handleResize = debounce(function() {
+            ['trendChart', 'regionChart', 'typeChart'].forEach(id => {
+                const chart = echarts.getInstanceByDom(document.getElementById(id));
+                if (chart) {
+                    chart.resize();
+                }
+            });
+        }, 100);
+
+        window.addEventListener('resize', handleResize);
+    </script>
+    <!-- 在表格后面、</body>前添加以下代码 -->
+    <script src="js/dataHandler.js"></script>
+    <script>
+        // 模拟侵权概况数据
+        const mockTortData = Array.from({length: 165}, (_, index) => ({
+            id: index + 1,
+            caseType: ['数据泄露', '未授权使用', '超范围收集', '违规处理'][Math.floor(Math.random() * 4)],
+            occurrenceTime: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)).toLocaleDateString(),
+            affectedUsers: Math.floor(Math.random() * 10000) + 100,
+            damageLevel: ['严重', '中等', '轻微'][Math.floor(Math.random() * 3)],
+            industryType: ['互联网', '金融', '教育', '医疗'][Math.floor(Math.random() * 4)],
+            region: ['华东', '华南', '华北', '西部'][Math.floor(Math.random() * 4)],
+            estimatedLoss: Math.floor(Math.random() * 1000000) + 50000,
+            processingStatus: ['已处理', '处理中', '待处理'][Math.floor(Math.random() * 3)],
+            preventiveMeasures: ['技术升级', '制度完善', '人员培训', '流程优化'][Math.floor(Math.random() * 4)]
+        }));
+    
+        const dataHandler = new DataHandler(mockTortData);
+    
+        // 渲染表格数据
+        function renderTable() {
+            const {data, total, currentPage, totalPages} = dataHandler.getPageData();
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.caseType}</td>
+                    <td>${item.occurrenceTime}</td>
+                    <td>${item.affectedUsers}</td>
+                    <td>
+                        <span class="badge ${
+                            item.damageLevel === '严重' ? 'bg-danger' : 
+                            item.damageLevel === '中等' ? 'bg-warning' : 'bg-info'
+                        }">${item.damageLevel}</span>
+                    </td>
+                    <td>${item.industryType}</td>
+                    <td>${item.region}</td>
+                    <td>${item.estimatedLoss.toLocaleString()}</td>
+                    <td>
+                        <span class="badge ${
+                            item.processingStatus === '已处理' ? 'bg-success' : 
+                            item.processingStatus === '处理中' ? 'bg-primary' : 'bg-warning'
+                        }">${item.processingStatus}</span>
+                    </td>
+                    <td>${item.preventiveMeasures}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn btn-sm btn-warning" onclick="deleteItem(${item.id})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+    
+            // 更新分页信息
+            document.querySelector('.pagination').innerHTML = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">上一页</a>
+                </li>
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => `
+                    <li class="page-item ${page === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${page})">${page}</a>
+                    </li>
+                `).join('')}
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">下一页</a>
+                </li>
+            `;
+    
+            document.querySelector('.d-flex > div:first-child').textContent = `共 ${total} 条`;
+        }
+    
+        // 分页切换
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(dataHandler.data.length / dataHandler.pageSize)) return;
+            dataHandler.setPage(page);
+            renderTable();
+        }
+    
+        // 删除数据
+        function deleteItem(id) {
+            if (confirm('确定要删除这条记录吗？')) {
+                dataHandler.delete(id);
+                renderTable();
+            }
+        }
+    
+        // 编辑数据
+        function editItem(id) {
+            const item = dataHandler.data.find(item => item.id === id);
+            const newStatus = prompt('请输入新的处理状态（已处理/处理中/待处理）：', item.processingStatus);
+            if (newStatus !== null) {
+                dataHandler.update(id, {
+                    processingStatus: newStatus,
+                    preventiveMeasures: newStatus === '已处理' ? '技术升级' : item.preventiveMeasures
+                });
+                renderTable();
+            }
+        }
+    
+        // 添加数据
+        document.querySelector('button.btn-outline-secondary').onclick = function() {
+            const newItem = {
+                caseType: '数据泄露',
+                occurrenceTime: new Date().toLocaleDateString(),
+                affectedUsers: 100,
+                damageLevel: '中等',
+                industryType: '互联网',
+                region: '华东',
+                estimatedLoss: 50000,
+                processingStatus: '待处理',
+                preventiveMeasures: '待定'
+            };
+            dataHandler.add(newItem);
+            renderTable();
+        };
+    
+        // 初始化渲染
+        renderTable();
+    
+        // 每页显示条数变化处理
+        document.querySelector('.form-select').addEventListener('change', function(e) {
+            dataHandler.setPageSize(parseInt(e.target.value));
+            renderTable();
+        });
+    </script>
+</body>
+</html>

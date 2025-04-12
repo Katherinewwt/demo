@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>损害类型</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 更换为更快的 CDN 源 -->
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fc;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .btn-search {
+            background: #1abc9c;
+            color: white;
+        }
+        .btn-search:hover {
+            background: #16a085;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- 损害类型统计图表 -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">损害类型统计</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="damageTypeChart" style="height: 300px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">损害报告统计</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center">
+                            <h2>严重损害</h2>
+                            <p>2例</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索表单 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="损害类型ID">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="损害类型名称">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="典型案例">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="常见侵权场景">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="影响范围">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-search w-100">搜索</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100">新增</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据表格 -->
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>损害类型ID</th>
+                            <th>损害类型名称</th>
+                            <th>典型案例</th>
+                            <th>常见侵权场景</th>
+                            <th>影响范围</th>
+                            <th>平均赔偿金额</th>
+                            <th>预测建议数</th>
+                            <th>应对建议</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>003</td>
+                            <td>隐私历史泄露</td>
+                            <td>某直播平台未经用户同意收集个人信息，并在第三方展示</td>
+                            <td>游戏平台、论坛等用户个人信息泄露后引发的网络暴力</td>
+                            <td>游戏区、游戏玩家300人</td>
+                            <td>15000元</td>
+                            <td>5</td>
+                            <td>建议心理援助，通过法律途径维权</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">编辑</button>
+                                <button class="btn btn-sm btn-warning">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>002</td>
+                            <td>隐私泄露</td>
+                            <td>某医疗机构未经授权泄露患者个人信息给第三方药品公司</td>
+                            <td>医疗机构、教育机构等非法使用客户个人数据情况</td>
+                            <td>全市、游戏玩家500人</td>
+                            <td>20000元</td>
+                            <td>4</td>
+                            <td>要求即时停止侵权，公开道歉，心理赔偿</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">编辑</button>
+                                <button class="btn btn-sm btn-warning">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>001</td>
+                            <td>安全隐患</td>
+                            <td>某电商平台未经用户同意，擅自用户银行信息代表用户支付</td>
+                            <td>电商平台、社交软件等擅用用户产品达1000人</td>
+                            <td>全国范围，涉及用户产品达1000人</td>
+                            <td>30000元</td>
+                            <td>3</td>
+                            <td>依据法律，收集证据，提起诉讼</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">编辑</button>
+                                <button class="btn btn-sm btn-warning">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>共 3 条</div>
+                    <div class="d-flex align-items-center">
+                        <ul class="pagination mb-0">
+                            <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                        </ul>
+                        <select class="form-select ms-2" style="width: auto;">
+                            <option>5 条/页</option>
+                            <option>10 条/页</option>
+                            <option>20 条/页</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在表格后面、</body>前添加以下代码 -->
+    <script src="js/dataHandler.js"></script>
+    <script>
+        // 模拟损害类型数据
+        const mockDamageTypes = Array.from({length: 180}, (_, index) => ({
+            id: index + 1,
+            typeCode: `D${String(index + 1).padStart(3, '0')}`,
+            typeName: ['个人信息泄露', '隐私权侵犯', '名誉权侵害', '财产损失'][Math.floor(Math.random() * 4)],
+            damageLevel: ['严重', '中等', '轻微'][Math.floor(Math.random() * 3)],
+            impactScope: ['个人', '家庭', '群体', '社会'][Math.floor(Math.random() * 4)],
+            compensationStandard: Math.floor(Math.random() * 50000) + 1000,
+            legalBasis: ['民法典第一千零三十四条', '个人信息保护法第六十九条', '网络安全法第六十四条'][Math.floor(Math.random() * 3)],
+            updateTime: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)).toLocaleDateString(),
+            description: '具体损害情况描述',
+            remark: ['需要专业鉴定', '可以协商和解', '建议诉讼解决'][Math.floor(Math.random() * 3)]
+        }));
+    
+        const dataHandler = new DataHandler(mockDamageTypes);
+    
+        // 渲染表格数据
+        function renderTable() {
+            const {data, total, currentPage, totalPages} = dataHandler.getPageData();
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.typeCode}</td>
+                    <td>${item.typeName}</td>
+                    <td>${item.damageLevel}</td>
+                    <td>${item.impactScope}</td>
+                    <td>${item.compensationStandard}</td>
+                    <td>${item.legalBasis}</td>
+                    <td>${item.updateTime}</td>
+                    <td>${item.description}</td>
+                    <td>${item.remark}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn btn-sm btn-warning" onclick="deleteItem(${item.id})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+    
+            // 更新分页信息
+            document.querySelector('.pagination').innerHTML = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">上一页</a>
+                </li>
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => `
+                    <li class="page-item ${page === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${page})">${page}</a>
+                    </li>
+                `).join('')}
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">下一页</a>
+                </li>
+            `;
+    
+            document.querySelector('.d-flex > div:first-child').textContent = `共 ${total} 条`;
+        }
+    
+        // 分页切换
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(dataHandler.data.length / dataHandler.pageSize)) return;
+            dataHandler.setPage(page);
+            renderTable();
+        }
+    
+        // 删除数据
+        function deleteItem(id) {
+            if (confirm('确定要删除这条记录吗？')) {
+                dataHandler.delete(id);
+                renderTable();
+            }
+        }
+    
+        // 编辑数据
+        function editItem(id) {
+            const item = dataHandler.data.find(item => item.id === id);
+            const newStandard = prompt('请输入新的赔偿标准：', item.compensationStandard);
+            if (newStandard !== null) {
+                dataHandler.update(id, {
+                    compensationStandard: parseInt(newStandard),
+                    updateTime: new Date().toLocaleDateString()
+                });
+                renderTable();
+            }
+        }
+    
+        // 添加数据
+        document.querySelector('button.btn-outline-secondary').onclick = function() {
+            const newItem = {
+                typeCode: `D${String(dataHandler.data.length + 1).padStart(3, '0')}`,
+                typeName: '个人信息泄露',
+                damageLevel: '中等',
+                impactScope: '个人',
+                compensationStandard: 10000,
+                legalBasis: '民法典第一千零三十四条',
+                updateTime: new Date().toLocaleDateString(),
+                description: '新增损害类型',
+                remark: '需要专业鉴定'
+            };
+            dataHandler.add(newItem);
+            renderTable();
+        };
+    
+        // 初始化渲染
+        renderTable();
+    
+        // 每页显示条数变化处理
+        document.querySelector('.form-select').addEventListener('change', function(e) {
+            dataHandler.setPageSize(parseInt(e.target.value));
+            renderTable();
+        });
+    </script>
+    <script>
+        // 初始化图表
+        function initDamageTypeChart() {
+            const chart = echarts.init(document.getElementById('damageTypeChart'));
+            chart.setOption({
+                tooltip: {
+                    trigger: 'item'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left'
+                },
+                series: [{
+                    type: 'pie',
+                    radius: '50%',
+                    data: [
+                        { value: 40, name: '经济损失' },
+                        { value: 25, name: '隐私泄露' },
+                        { value: 15, name: '声誉损害' },
+                        { value: 12, name: '精神损害' },
+                        { value: 8, name: '知识产权' }
+                    ],
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }]
+            });
+        }
+    
+        // 页面加载完成后初始化图表
+        window.addEventListener('load', initDamageTypeChart);
+    
+        // 监听窗口大小变化，调整图表大小
+        window.addEventListener('resize', function() {
+            const chart = echarts.getInstanceByDom(document.getElementById('damageTypeChart'));
+            if (chart) {
+                chart.resize();
+            }
+        });
+    </script>
+</body>
+</html>

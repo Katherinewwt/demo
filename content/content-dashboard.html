@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>仪表盘</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        .data-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .index-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .progress {
+            height: 20px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- 侵权数据监测 -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="data-card">
+                    <h5>侵权行为监测</h5>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <div>测试ID: 40</div>
+                            <div>值: 0</div>
+                            <div>单位: 某三公司</div>
+                        </div>
+                        <div>
+                            <div>标记: DI1</div>
+                            <div>值单位: 暂无</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="data-card">
+                    <h5>受损数据监测</h5>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <div>测试ID: 19</div>
+                            <div>值: 0</div>
+                            <div>单位: 李四公司</div>
+                        </div>
+                        <div>
+                            <div>标记: DI1</div>
+                            <div>值单位: 暂无</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="data-card">
+                    <h5>影响范围监测</h5>
+                    <div class="d-flex justify-content-between mt-3">
+                        <div>
+                            <div>测试ID: 28</div>
+                            <div>值: 0</div>
+                            <div>单位: 王五公司</div>
+                        </div>
+                        <div>
+                            <div>标记: DI1</div>
+                            <div>值单位: 暂无</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预测指数展示 -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="data-card">
+                    <h5>预测指数</h5>
+                    <div id="predictionIndex" style="height: 100px;"></div>
+                    <div class="index-value">31</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="data-card">
+                    <h5>深度预测指数</h5>
+                    <div id="deepIndex" style="height: 100px;"></div>
+                    <div class="index-value">99</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="data-card">
+                    <h5>中级预测指数</h5>
+                    <div id="middleIndex" style="height: 100px;"></div>
+                    <div class="index-value">91</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 赔偿预测进度和团队预测目标 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="data-card">
+                    <h5>赔偿预测进度</h5>
+                    <div id="compensationProgress" style="height: 300px;"></div>
+                    <div class="text-center mt-3">
+                        <span class="text-muted">15% 未完成</span>
+                        <span class="text-success mx-2">85% 已完成</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="data-card">
+                    <h5>团队预测目标</h5>
+                    <div class="mt-4">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>月度预测满意率≧5%</span>
+                                <span>63%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 63%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>测试数据1</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>测试数据2</span>
+                                <span>16%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 16%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>测试数据3</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between">
+                                <span>测试数据4</span>
+                                <span>44%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 44%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 修改初始化方式
+        function initCharts() {
+            // 确保 DOM 和 echarts 都已加载
+            if (!document.getElementById('predictionIndex') || !echarts) {
+                setTimeout(initCharts, 100);
+                return;
+            }
+    
+            try {
+                // 预测指数图表
+                const predictionChart = echarts.init(document.getElementById('predictionIndex'));
+                predictionChart.setOption({
+                    series: [{
+                        type: 'gauge',
+                        startAngle: 180,
+                        endAngle: 0,
+                        min: 0,
+                        max: 100,
+                        splitNumber: 10,
+                        itemStyle: {
+                            color: '#58D9F9'
+                        },
+                        progress: {
+                            show: true,
+                            roundCap: true,
+                            width: 8
+                        },
+                        pointer: {
+                            show: false
+                        },
+                        axisLine: {
+                            roundCap: true,
+                            lineStyle: {
+                                width: 8
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false
+                        },
+                        title: {
+                            show: false
+                        },
+                        detail: {
+                            show: false
+                        },
+                        data: [{
+                            value: 31
+                        }]
+                    }]
+                });
+
+                // 深度预测指数图表
+                const deepChart = echarts.init(document.getElementById('deepIndex'));
+                deepChart.setOption({
+                    // 与 predictionChart 配置相同，只改变颜色和数值
+                    series: [{
+                        type: 'gauge',
+                        startAngle: 180,
+                        endAngle: 0,
+                        min: 0,
+                        max: 100,
+                        splitNumber: 10,
+                        itemStyle: {
+                            color: '#91CC75'
+                        },
+                        progress: {
+                            show: true,
+                            roundCap: true,
+                            width: 8
+                        },
+                        pointer: {
+                            show: false
+                        },
+                        axisLine: {
+                            roundCap: true,
+                            lineStyle: {
+                                width: 8
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false
+                        },
+                        title: {
+                            show: false
+                        },
+                        detail: {
+                            show: false
+                        },
+                        data: [{
+                            value: 99
+                        }]
+                    }]
+                });
+
+                // 中级预测指数图表
+                const middleChart = echarts.init(document.getElementById('middleIndex'));
+                middleChart.setOption({
+                    // 与 predictionChart 配置相同，只改变颜色和数值
+                    series: [{
+                        type: 'gauge',
+                        startAngle: 180,
+                        endAngle: 0,
+                        min: 0,
+                        max: 100,
+                        splitNumber: 10,
+                        itemStyle: {
+                            color: '#FAC858'
+                        },
+                        progress: {
+                            show: true,
+                            roundCap: true,
+                            width: 8
+                        },
+                        pointer: {
+                            show: false
+                        },
+                        axisLine: {
+                            roundCap: true,
+                            lineStyle: {
+                                width: 8
+                            }
+                        },
+                        axisTick: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false
+                        },
+                        title: {
+                            show: false
+                        },
+                        detail: {
+                            show: false
+                        },
+                        data: [{
+                            value: 91
+                        }]
+                    }]
+                });
+
+                // 赔偿预测进度图表
+                const progressChart = echarts.init(document.getElementById('compensationProgress'));
+                progressChart.setOption({
+                    series: [{
+                        type: 'pie',
+                        radius: ['70%', '80%'],
+                        avoidLabelOverlap: false,
+                        startAngle: 225,
+                        color: ['#FF9F7F', '#E8EDF3'],
+                        label: {
+                            show: false
+                        },
+                        data: [{
+                            value: 85,
+                            name: '已完成'
+                        }, {
+                            value: 15,
+                            name: '未完成'
+                        }]
+                    }]
+                });
+            } catch (error) {
+                console.error('图表初始化失败:', error);
+                setTimeout(initCharts, 100);
+            }
+        }
+
+        // 修改初始化调用方式
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(initCharts, 300);
+        });
+
+        // 监听 iframe 加载完成事件
+        window.addEventListener('load', function() {
+            if (!document.querySelector('#predictionIndex canvas')) {
+                initCharts();
+            }
+        });
+    </script>
+</body>
+</html>

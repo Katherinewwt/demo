@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>导航菜单</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .menu {
+            list-style: none;
+            padding: 0;
+        }
+        .menu-item {
+            padding: 12px;
+            margin: 6px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .menu-item:hover {
+            background: #f0f0f0;
+        }
+        .menu-item.active {
+            background: #e3f2fd;
+            color: #2196f3;
+        }
+    </style>
+</head>
+<body>
+    <ul class="menu">
+        <li class="menu-item" data-page="cases.html">侵权赔偿案例</li>
+        <li class="menu-item" data-page="damage-types.html">损害类型</li>
+        <li class="menu-item" data-page="evidence-mining.html">侵权证据挖掘</li>
+        <li class="menu-item" data-page="data-analysis.html">大数据分析</li>
+        <li class="menu-item" data-page="legal-interpretation.html">侵权损害法规解读</li>
+        <li class="menu-item" data-page="tort-situation.html">侵权概况</li>
+        <li class="menu-item" data-page="prediction-records.html">预测记录</li>
+        <li class="menu-item" data-page="system-management.html">系统管理</li>
+    </ul>
+
+    <script>
+        // 获取所有菜单项
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        // 添加点击事件
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有active类
+                menuItems.forEach(i => i.classList.remove('active'));
+                // 添加当前active类
+                this.classList.add('active');
+                
+                // 获取目标页面路径
+                const pageUrl = this.dataset.page;
+                
+                // 向父页面发送导航消息
+                window.parent.postMessage({
+                    type: 'navigate',
+                    url: pageUrl
+                }, '*');
+            });
+        });
+    </script>
+</body>
+</html>

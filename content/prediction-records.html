@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>预测记录</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fc;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .prediction-type {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .prediction-type-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .prediction-type-bar {
+            flex-grow: 1;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+        .prediction-type-progress {
+            height: 100%;
+            background: #4e73df;
+        }
+        .prediction-factors {
+            height: 300px;
+        }
+        .btn-search {
+            background: #4e73df;
+            color: white;
+        }
+        .btn-search:hover {
+            background: #2e59d9;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 左侧预测类别 -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-4">预测类别</h5>
+                        <div class="prediction-type">
+                            <div class="prediction-type-item">
+                                <span>数据泄露</span>
+                                <div class="prediction-type-bar">
+                                    <div class="prediction-type-progress" style="width: 81.35%"></div>
+                                </div>
+                                <span>81.35%</span>
+                            </div>
+                            <div class="prediction-type-item">
+                                <span>滥用数据</span>
+                                <div class="prediction-type-bar">
+                                    <div class="prediction-type-progress" style="width: 63.48%"></div>
+                                </div>
+                                <span>63.48%</span>
+                            </div>
+                            <div class="prediction-type-item">
+                                <span>非法收集</span>
+                                <div class="prediction-type-bar">
+                                    <div class="prediction-type-progress" style="width: 52.26%"></div>
+                                </div>
+                                <span>52.26%</span>
+                            </div>
+                            <div class="prediction-type-item">
+                                <span>算法数据</span>
+                                <div class="prediction-type-bar">
+                                    <div class="prediction-type-progress" style="width: 47.51%"></div>
+                                </div>
+                                <span>47.51%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧预测因素 -->
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="mb-4">预测因素</h5>
+                        <div id="factorsChart" class="prediction-factors"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预测记录列表 -->
+        <div class="card">
+            <div class="card-body">
+                <!-- 搜索表单 -->
+                <div class="row g-3 mb-4">
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="预测编号">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="预测日期">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="侵权主体">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="被侵权主体">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="预测结果">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-search w-100">搜索</button>
+                    </div>
+                </div>
+
+                <!-- 数据表格 -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>预测编号</th>
+                            <th>预测日期</th>
+                            <th>侵权主体</th>
+                            <th>被侵权主体</th>
+                            <th>预测赔偿额</th>
+                            <th>实际赔偿额</th>
+                            <th>偏差率</th>
+                            <th>预测结果备注</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>P003</td>
+                            <td>2025年07月20日</td>
+                            <td>某在线教育机构</td>
+                            <td>教师及学生实名</td>
+                            <td>20000元</td>
+                            <td>18000元</td>
+                            <td>11.11%</td>
+                            <td>启合约纠纷调解结果学生实名参考情况</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">编辑</button>
+                                <button class="btn btn-sm btn-warning">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>P002</td>
+                            <td>2025年05月15日</td>
+                            <td>某社交软件公司</td>
+                            <td>软件用户实名实</td>
+                            <td>30000元</td>
+                            <td>32000元</td>
+                            <td>-6.25%</td>
+                            <td>依照改改行为参考隐私用户影响</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">编辑</button>
+                                <button class="btn btn-sm btn-warning">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>P001</td>
+                            <td>2025年03月10日</td>
+                            <td>某电商平台</td>
+                            <td>平台用户实名实</td>
+                            <td>50000元</td>
+                            <td>45000元</td>
+                            <td>10%</td>
+                            <td>参考类似案例及平台赔偿范围</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary">编辑</button>
+                                <button class="btn btn-sm btn-warning">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>共 3 条</div>
+                    <div class="d-flex align-items-center">
+                        <ul class="pagination mb-0">
+                            <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                        </ul>
+                        <select class="form-select ms-2" style="width: auto;">
+                            <option>5 条/页</option>
+                            <option>10 条/页</option>
+                            <option>20 条/页</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在表格后面、</body>前添加以下代码 -->
+    <script src="js/dataHandler.js"></script>
+    <script>
+        // 模拟预测记录数据
+        const mockPredictionData = Array.from({length: 155}, (_, index) => ({
+            id: index + 1,
+            predictionId: `P${String(index + 1).padStart(3, '0')}`,
+            caseType: ['数据泄露', '隐私侵犯', '未授权使用', '超范围收集'][Math.floor(Math.random() * 4)],
+            predictedAmount: Math.floor(Math.random() * 100000) + 5000,
+            actualAmount: Math.floor(Math.random() * 100000) + 5000,
+            accuracy: Math.floor(Math.random() * 30 + 70) + '%',
+            predictionDate: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)).toLocaleDateString(),
+            modelVersion: ['v1.0.0', 'v1.1.0', 'v1.2.0', 'v2.0.0'][Math.floor(Math.random() * 4)],
+            status: ['已确认', '待确认', '需修正'][Math.floor(Math.random() * 3)],
+            remark: ['预测准确', '需要调整', '待进一步验证'][Math.floor(Math.random() * 3)]
+        }));
+    
+        const dataHandler = new DataHandler(mockPredictionData);
+    
+        // 渲染表格数据
+        function renderTable() {
+            const {data, total, currentPage, totalPages} = dataHandler.getPageData();
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.predictionId}</td>
+                    <td>${item.caseType}</td>
+                    <td>${item.predictedAmount.toLocaleString()}</td>
+                    <td>${item.actualAmount.toLocaleString()}</td>
+                    <td>
+                        <span class="badge ${
+                            parseInt(item.accuracy) >= 90 ? 'bg-success' :
+                            parseInt(item.accuracy) >= 80 ? 'bg-primary' : 'bg-warning'
+                        }">${item.accuracy}</span>
+                    </td>
+                    <td>${item.predictionDate}</td>
+                    <td>${item.modelVersion}</td>
+                    <td>
+                        <span class="badge ${
+                            item.status === '已确认' ? 'bg-success' :
+                            item.status === '待确认' ? 'bg-warning' : 'bg-danger'
+                        }">${item.status}</span>
+                    </td>
+                    <td>${item.remark}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn btn-sm btn-warning" onclick="deleteItem(${item.id})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+    
+            // 更新分页信息
+            document.querySelector('.pagination').innerHTML = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">上一页</a>
+                </li>
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => `
+                    <li class="page-item ${page === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${page})">${page}</a>
+                    </li>
+                `).join('')}
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">下一页</a>
+                </li>
+            `;
+    
+            document.querySelector('.d-flex > div:first-child').textContent = `共 ${total} 条`;
+        }
+    
+        // 分页切换
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(dataHandler.data.length / dataHandler.pageSize)) return;
+            dataHandler.setPage(page);
+            renderTable();
+        }
+    
+        // 删除数据
+        function deleteItem(id) {
+            if (confirm('确定要删除这条记录吗？')) {
+                dataHandler.delete(id);
+                renderTable();
+            }
+        }
+    
+        // 编辑数据
+        function editItem(id) {
+            const item = dataHandler.data.find(item => item.id === id);
+            const newActualAmount = prompt('请输入实际赔偿金额：', item.actualAmount);
+            if (newActualAmount !== null) {
+                const actualAmount = parseInt(newActualAmount);
+                const accuracy = Math.floor((1 - Math.abs(actualAmount - item.predictedAmount) / item.predictedAmount) * 100) + '%';
+                dataHandler.update(id, {
+                    actualAmount,
+                    accuracy,
+                    status: '已确认',
+                    remark: '已更新实际赔偿金额'
+                });
+                renderTable();
+            }
+        }
+    
+        // 添加数据
+        document.querySelector('button.btn-outline-secondary').onclick = function() {
+            const newItem = {
+                predictionId: `P${String(dataHandler.data.length + 1).padStart(3, '0')}`,
+                caseType: '数据泄露',
+                predictedAmount: 10000,
+                actualAmount: 0,
+                accuracy: '待定',
+                predictionDate: new Date().toLocaleDateString(),
+                modelVersion: 'v2.0.0',
+                status: '待确认',
+                remark: '新增预测记录'
+            };
+            dataHandler.add(newItem);
+            renderTable();
+        };
+    
+        // 初始化渲染
+        renderTable();
+    
+        // 每页显示条数变化处理
+        document.querySelector('.form-select').addEventListener('change', function(e) {
+            dataHandler.setPageSize(parseInt(e.target.value));
+            renderTable();
+        });
+    </script>
+    <script>
+        function initCharts() {
+            const factorsChart = echarts.init(document.getElementById('factorsChart'));
+            factorsChart.setOption({
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'value',
+                    max: 100
+                },
+                yAxis: {
+                    type: 'category',
+                    data: ['数据范围', '影响范围', '主观恶意', '使用时长', '使用原因']
+                },
+                series: [{
+                    type: 'bar',
+                    data: [
+                        {value: 91, itemStyle: {color: '#4e73df'}},
+                        {value: 89, itemStyle: {color: '#1cc88a'}},
+                        {value: 58, itemStyle: {color: '#36b9cc'}},
+                        {value: 42, itemStyle: {color: '#f6c23e'}},
+                        {value: 16, itemStyle: {color: '#e74a3b'}}
+                    ]
+                }]
+            });
+        }
+    
+        document.addEventListener('DOMContentLoaded', initCharts);
+    
+        function debounce(fn, delay) {
+            let timer = null;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, arguments), delay);
+            }
+        }
+    
+        const handleResize = debounce(function() {
+            const chart = echarts.getInstanceByDom(document.getElementById('factorsChart'));
+            if (chart) {
+                chart.resize();
+            }
+        }, 100);
+    
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+</html>

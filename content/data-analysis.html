@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大数据分析</title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://fastly.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f8f9fc;
+        }
+        .stats-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .number-highlight {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f6c23e;
+        }
+        .trend-chart {
+            height: 60px;
+            margin-top: 10px;
+        }
+        .table th {
+            background: #f8f9fc;
+        }
+        .btn-edit {
+            background: #4e73df;
+            color: white;
+        }
+        .btn-delete {
+            background: #e74a3b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- 数据统计卡片 -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h6 class="text-muted">当日侵权数据调用</h6>
+                    <div class="number-highlight">680</div>
+                    <div class="trend-chart" id="dailyUsageChart"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h6 class="text-muted">当日调用频次</h6>
+                    <div class="number-highlight">710</div>
+                    <div class="trend-chart" id="frequencyChart"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h6 class="text-muted">累计侵权数据量</h6>
+                    <div class="number-highlight">959</div>
+                    <div class="trend-chart" id="totalDataChart"></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <h6 class="text-muted">累计调用次数</h6>
+                    <div class="number-highlight">402</div>
+                    <div class="trend-chart" id="totalUsageChart"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 搜索表单 -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="侵权行为特征">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="关联数据量">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="相似度数据量">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="预测模型得分">
+                    </div>
+                    <div class="col-md">
+                        <input type="text" class="form-control" placeholder="行业对比数据">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">搜索</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-outline-secondary w-100">新增</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 数据表格 -->
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>侵权行为特征</th>
+                            <th>关联数据量</th>
+                            <th>相似度数据量</th>
+                            <th>赔偿金额范围</th>
+                            <th>数据置信度</th>
+                            <th>预测模型得分</th>
+                            <th>行业对比数据</th>
+                            <th>影响因数综合权重</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>在线教育平台未经许可擅自使用学生个人信息</td>
+                            <td>4000条</td>
+                            <td>8</td>
+                            <td>4000-8000元</td>
+                            <td>82%</td>
+                            <td>0.78</td>
+                            <td>行业平均相似赔偿额度≈6000元</td>
+                            <td>模型平均影响度: 0.5, 案例相似度权重: 0.5</td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">编辑</button>
+                                <button class="btn btn-sm btn-delete">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>社交软件滥用用户个人隐私记录信息</td>
+                            <td>3000条</td>
+                            <td>6</td>
+                            <td>3000-8000元</td>
+                            <td>70%</td>
+                            <td>0.75</td>
+                            <td>行业平均相似赔偿额度≈5000元</td>
+                            <td>用户影响程度: 0.7, 模型对比: 0.3</td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">编辑</button>
+                                <button class="btn btn-sm btn-delete">删除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>电商平台私自共享用户购物偏好数据</td>
+                            <td>5000条</td>
+                            <td>10</td>
+                            <td>5000-10000元</td>
+                            <td>85%</td>
+                            <td>0.8</td>
+                            <td>行业平均相似赔偿额度≈7000元</td>
+                            <td>数据规模影响: 0.6, 模型匹配度: 0.4</td>
+                            <td>
+                                <button class="btn btn-sm btn-edit">编辑</button>
+                                <button class="btn btn-sm btn-delete">删除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <div>共 3 条</div>
+                    <div class="d-flex align-items-center">
+                        <ul class="pagination mb-0">
+                            <li class="page-item"><a class="page-link" href="#">上一页</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">下一页</a></li>
+                        </ul>
+                        <select class="form-select ms-2" style="width: auto;">
+                            <option>5 条/页</option>
+                            <option>10 条/页</option>
+                            <option>20 条/页</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在表格后面、</body>前添加以下代码 -->
+    <script src="js/dataHandler.js"></script>
+    <script>
+        // 模拟分析数据
+        const mockAnalysisData = Array.from({length: 170}, (_, index) => ({
+            id: index + 1,
+            analysisId: `A${String(index + 1).padStart(3, '0')}`,
+            dataType: ['用户行为', '交易记录', '投诉数据', '系统日志'][Math.floor(Math.random() * 4)],
+            dataVolume: Math.floor(Math.random() * 10000) + 1000 + ' 条',
+            timeRange: `${Math.floor(Math.random() * 12) + 1} 个月`,
+            analysisMethod: ['机器学习', '统计分析', '深度学习', '规则匹配'][Math.floor(Math.random() * 4)],
+            accuracy: Math.floor(Math.random() * 20 + 80) + '%',
+            analysisStatus: ['已完成', '进行中', '待处理'][Math.floor(Math.random() * 3)],
+            updateTime: new Date(2024, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28)).toLocaleDateString(),
+            conclusion: ['存在明显侵权行为', '疑似侵权行为', '无明显侵权行为'][Math.floor(Math.random() * 3)]
+        }));
+    
+        const dataHandler = new DataHandler(mockAnalysisData);
+    
+        // 渲染表格数据
+        function renderTable() {
+            const {data, total, currentPage, totalPages} = dataHandler.getPageData();
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td>${item.id}</td>
+                    <td>${item.analysisId}</td>
+                    <td>${item.dataType}</td>
+                    <td>${item.dataVolume}</td>
+                    <td>${item.timeRange}</td>
+                    <td>${item.analysisMethod}</td>
+                    <td>${item.accuracy}</td>
+                    <td>
+                        <span class="badge ${item.analysisStatus === '已完成' ? 'bg-success' : 
+                                          item.analysisStatus === '进行中' ? 'bg-primary' : 'bg-warning'}">
+                            ${item.analysisStatus}
+                        </span>
+                    </td>
+                    <td>${item.updateTime}</td>
+                    <td>${item.conclusion}</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" onclick="editItem(${item.id})">编辑</button>
+                        <button class="btn btn-sm btn-warning" onclick="deleteItem(${item.id})">删除</button>
+                    </td>
+                </tr>
+            `).join('');
+    
+            // 更新分页信息
+            document.querySelector('.pagination').innerHTML = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">上一页</a>
+                </li>
+                ${Array.from({length: totalPages}, (_, i) => i + 1).map(page => `
+                    <li class="page-item ${page === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${page})">${page}</a>
+                    </li>
+                `).join('')}
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">下一页</a>
+                </li>
+            `;
+    
+            document.querySelector('.d-flex > div:first-child').textContent = `共 ${total} 条`;
+        }
+    
+        // 分页切换
+        function changePage(page) {
+            if (page < 1 || page > Math.ceil(dataHandler.data.length / dataHandler.pageSize)) return;
+            dataHandler.setPage(page);
+            renderTable();
+        }
+    
+        // 删除数据
+        function deleteItem(id) {
+            if (confirm('确定要删除这条记录吗？')) {
+                dataHandler.delete(id);
+                renderTable();
+            }
+        }
+    
+        // 编辑数据
+        function editItem(id) {
+            const item = dataHandler.data.find(item => item.id === id);
+            const newConclusion = prompt('请输入新的分析结论：', item.conclusion);
+            if (newConclusion !== null) {
+                dataHandler.update(id, {
+                    conclusion: newConclusion,
+                    updateTime: new Date().toLocaleDateString()
+                });
+                renderTable();
+            }
+        }
+    
+        // 添加数据
+        document.querySelector('button.btn-outline-secondary').onclick = function() {
+            const newItem = {
+                analysisId: `A${String(dataHandler.data.length + 1).padStart(3, '0')}`,
+                dataType: '用户行为',
+                dataVolume: '1000 条',
+                timeRange: '3 个月',
+                analysisMethod: '机器学习',
+                accuracy: '85%',
+                analysisStatus: '待处理',
+                updateTime: new Date().toLocaleDateString(),
+                conclusion: '待分析'
+            };
+            dataHandler.add(newItem);
+            renderTable();
+        };
+    
+        // 初始化渲染
+        renderTable();
+    
+        // 每页显示条数变化处理
+        document.querySelector('.form-select').addEventListener('change', function(e) {
+            dataHandler.setPageSize(parseInt(e.target.value));
+            renderTable();
+        });
+    </script>
+    <script>
+        // 初始化趋势图表
+        function initCharts() {
+            const chartOptions = {
+                xAxis: {show: false},
+                yAxis: {show: false},
+                grid: {top: 0, right: 0, bottom: 0, left: 0},
+                series: [{
+                    type: 'line',
+                    smooth: true,
+                    symbol: 'none',
+                    areaStyle: {
+                        color: {
+                            type: 'linear',
+                            x: 0, y: 0, x2: 0, y2: 1,
+                            colorStops: [{
+                                offset: 0, color: 'rgba(246,194,62,0.2)'
+                            }, {
+                                offset: 1, color: 'rgba(246,194,62,0)'
+                            }]
+                        }
+                    },
+                    lineStyle: {
+                        color: '#f6c23e'
+                    },
+                    data: [30, 40, 35, 50, 45, 55, 40]
+                }]
+            };
+    
+            ['dailyUsageChart', 'frequencyChart', 'totalDataChart', 'totalUsageChart'].forEach(id => {
+                const chart = echarts.init(document.getElementById(id));
+                chart.setOption(chartOptions);
+            });
+        }
+    
+        // DOM加载完成后初始化图表
+        document.addEventListener('DOMContentLoaded', initCharts);
+    
+        // 使用防抖函数优化窗口调整时的图表重绘
+        function debounce(fn, delay) {
+            let timer = null;
+            return function() {
+                clearTimeout(timer);
+                timer = setTimeout(() => fn.apply(this, arguments), delay);
+            }
+        }
+    
+        // 优化后的窗口调整处理
+        const handleResize = debounce(function() {
+            ['dailyUsageChart', 'frequencyChart', 'totalDataChart', 'totalUsageChart'].forEach(id => {
+                const chart = echarts.getInstanceByDom(document.getElementById(id));
+                if (chart) {
+                    chart.resize();
+                }
+            });
+        }, 100);
+    
+        window.addEventListener('resize', handleResize);
+    </script>
+</body>
+</html>
