@@ -18,14 +18,10 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
         String username = credentials.get("username");
         String password = credentials.get("password");
-        
-        if ("jiajia".equals(password)) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("status", "success");
-            response.put("username", username);
-            return ResponseEntity.ok(response);
+        User login = userService.login(username, password);
+        if (login != null){
+            return ResponseEntity.ok(login);
         }
-        
         return ResponseEntity.badRequest().body("Invalid credentials");
     }
 }
